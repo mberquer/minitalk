@@ -6,10 +6,11 @@
 /*   By: mberquer <mberquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 15:29:32 by mberquer          #+#    #+#             */
-/*   Updated: 2022/06/17 17:15:47 by mberquer         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:28:31 by mberquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minitalk.h"
 
 void	dosomthing(int signum)
 {
