@@ -12,16 +12,39 @@
 
 #include "minitalk.h"
 
+void	sending_bits(int pid, int *str)
+{
+	static int	s_pid = 0;
+	static char	*message = 0;
+	static int	shift = -1;
+
+	if (str)
+		message = str;
+	if (pid)
+		s_pid = pid;
+	if (message[++shift / 8])
+	{
+			if (message[shift / 8] & (128 >> shift % 8))
+				kill(pid, SIGUSR1);
+			else
+				kill(pid, SIGUSR2);
+	}
+}
+
 int	main(int argc, char *argv[])
 {
-   int	pid;
+	int	pid;
+	int	i;
+	int	shift;
 
-   if (argc != 2)
-   {
+	i = -1;
+	shift = -1;
+	if (argc != 3)
+	{
    	ft_printf("client: invalid arguments\n");
    	exit(EXIT_FAILURE);
-   }
-   pid = atoi(argv[1]);
-   kill(pid, SIGUSR1);
-   return (0);
+	}
+	pid = atoi(argv[1]);
+	signal(SIGUSR1, sending_bits(0, 0));
+	signal(SIGUSR2, handler_2);
 }

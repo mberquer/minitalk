@@ -12,17 +12,24 @@
 
 #include "minitalk.h"
 
-void	dosomthing(int signum)
+void	handler_1(int signum)
 {
-	ft_printf("signum :%d\n", signum);
+	(void)signum;
+
 }
+
+void	handler_2(int signum)
+{
+	(void)signum;
+
+}
+
 int	main()
 {
 	int pid;
 
 	pid = getpid();
 	ft_printf("PID: %d\n", pid);
-	signal(SIGUSR1, dosomthing);
-	while (1)
-		pause();
+	signal(SIGUSR1, handler_1);
+	signal(SIGUSR2, handler_2);
 }
