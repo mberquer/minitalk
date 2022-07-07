@@ -12,24 +12,53 @@
 
 #include "minitalk.h"
 
-void	handler_1(int signum)
+char	*print_string(char *message)
 {
-	(void)signum;
-
+	ft_putstr_fd(message, 1);
+	free(message);
+	return (NULL);
 }
 
-void	handler_2(int signum)
+void	handler_sigusr(int signum, siginfo_t *info, void *context)
 {
-	(void)signum;
+	static char	c = 0xFF;
+	static int	bits = 0;
+	static int	pid = 0;
+	static char	*message = 0;
 
+	(void)context;
+	if (info->si_pid)
+		pid = info->si_pid;
+	if (signum == SIGUSR1)
+		c ^= 0x80 >> bits;
+	else if (signum == SIGUSR2)
+		c |= 0x80 >> bits;
+	if (++bits == 8)
+	{
+		if (c)
+			message = ft_straddc(message, c);
+		else
+			message = print_string(message);
+		bits = 0;
+		c = 0xFF;
+	}
+	kill(pid, SIGUSR1)
 }
 
 int	main()
 {
-	int pid;
+	struct sigaction	sa_signal;
+	sigset_t			block_mask;
 
-	pid = getpid();
-	ft_printf("PID: %d\n", pid);
-	signal(SIGUSR1, handler_1);
-	signal(SIGUSR2, handler_2);
+	sigemptyset(&block_mask);
+	sigaddset(&block_mask, SIGINT);
+	sigaddset(&block_mask, SIGQUIT);
+	sa_signal.sa_handler = 0; //not used (flags)
+	sa_signal.sa_flags = SA_SIGINFO; //more infos for handler
+	sa_signal.sa_mask = block_mask; //cant interupt
+	sa_signal.sa_sigaction = handler_sigusr;
+	sigaction(SIGUSR1, &sa_signal, NULL);
+	sigaction(SIGUSR2, &sa_signal, NULL);
+	ft_printf("PID: %d\n", getpid());
+	sleep(20000);
 }
