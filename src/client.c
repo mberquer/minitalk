@@ -6,11 +6,19 @@
 /*   By: mberquer <mberquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 03:11:07 by mberquer          #+#    #+#             */
-/*   Updated: 2022/06/22 03:12:42 by mberquer         ###   ########.fr       */
+/*   Updated: 2022/07/09 14:38:12 by mberquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+void	error(char *str)
+{
+	if (str)
+		free(str);
+	ft_putstr_fd("client: unexpected error.\n", 2);
+	exit(EXIT_FAILURE);
+}
 
 int	send_null(int pid, char *str)
 {
@@ -18,13 +26,14 @@ int	send_null(int pid, char *str)
 
 	if (i++ != 8)
 	{
-		kill(pid, SIGUSR1)
+		if (kill(pid, SIGUSR1) == -1)
+			error(str);
 		return (0);
 	}
 	return (1);
 }
 
-void	sending_bits(int pid, char *str)
+int	sending_bits(int pid, char *str)
 {
 	static int	s_pid = 0;
 	static char	*message = 0;
@@ -53,7 +62,7 @@ void	handler_sigusr(int signum)
 
 	end = 0;
 	if (signum == SIGUSR1)
-		end = sending_bit(0, 0);
+		end = sending_bits(0, 0);
 	else if (signum == SIGUSR2)
 	{
 		ft_printf("client: server ended unexpectdly.\n");
@@ -75,6 +84,6 @@ int	main(int argc, char *argv[])
 	}
 	signal(SIGUSR1, handler_sigusr);
 	signal(SIGUSR2, handler_sigusr);
-	sending_bit(ft_atoi(argv[1]), argv[2])
+	sending_bits(ft_atoi(argv[1]), argv[2]);
 	sleep(20000);
 }

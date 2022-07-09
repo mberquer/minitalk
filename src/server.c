@@ -6,7 +6,7 @@
 /*   By: mberquer <mberquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 15:29:32 by mberquer          #+#    #+#             */
-/*   Updated: 2022/06/17 17:28:31 by mberquer         ###   ########.fr       */
+/*   Updated: 2022/07/09 14:44:05 by mberquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ void	handler_sigusr(int signum, siginfo_t *info, void *context)
 	if (++bits == 8)
 	{
 		if (c)
-			message = ft_straddc(message, c);
+			message = ft_join(message, c);
 		else
 			message = print_string(message);
 		bits = 0;
 		c = 0xFF;
 	}
-	kill(pid, SIGUSR1)
+	kill(pid, SIGUSR1);
 }
 
 int	main()
