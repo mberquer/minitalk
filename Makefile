@@ -19,7 +19,9 @@ PRINTF = ft_printf/ft_print_char.c \
 		ft_printf/ft_print_str.c \
 		ft_printf/ft_print_unsigned.c \
 		ft_printf/ft_printf.c \
-		
+
+LIBFT = libft/libft.a
+
 SRCSC = src/client.c
 
 SRCSS = src/server.c \
@@ -38,16 +40,19 @@ FLAG = -g3 -Wall -Wextra -Werror
 SANI = -fsanitize=address
 
 $(NAME): $(OBJC) $(OBJS) $(OBJP)
-	$(CC) $(OBJS) $(OBJP) -o server #$(SANI)
-	$(CC) $(OBJC) $(OBJP) -o client #$(SANI)
+	$(MAKE) -C libft
+	$(CC) $(OBJS) $(OBJP) $(LIBFT) -o server #$(SANI)
+	$(CC) $(OBJC) $(OBJP) $(LIBFT) -o client #$(SANI)
 
 %.o: %.c
 	$(CC) $(FLAG) -c $< -o $@
 
-clean: 
+clean:
+	$(MAKE) clean -C libft
 	rm -rf $(OBJC) $(OBJS) $(OBJP)
 
 fclean: clean
+	$(MAKE) fclean -C libft
 	rm -rf client server
 
 all: $(NAME) 
