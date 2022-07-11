@@ -6,33 +6,47 @@
 /*   By: mberquer <mberquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 12:43:12 by mberquer          #+#    #+#             */
-/*   Updated: 2022/07/11 01:20:23 by mberquer         ###   ########.fr       */
+/*   Updated: 2022/07/11 16:57:59 by mberquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-char	*ft_strjoin_mt(char const *s1, char const c)
+char	*ft_straddc_first(char c)
 {
-	char	*s3;
+	char	*add;
+
+	add = (char *)malloc(sizeof(char) * 2);
+	if (!add)
+		return (NULL);
+	add[0] = c;
+	add[1] = '\0';
+	return (add);
+}
+
+/*
+*/
+char	*ft_straddc(char *str, char c)
+{
+	char	*add;
 	int		i;
 
-	i = 0;
-	if (s1 && c)
+	if (!c)
+		return (NULL);
+	if (!str)
+		return (ft_straddc_first(c));
+	add = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
+	if (!add)
 	{
-		s3 = (char *)malloc((ft_strlen(s1) + 2) * sizeof(char));
-		if (!s3)
-			return (NULL);
-		while (s1[i])
-		{
-			s3[i] = s1[i];
-			i++;
-		}
-		s3[i] = c;
-		s3[++i] = '\0';
-		free(s1);
-		return (s3);
+		free(str);
+		return (NULL);
 	}
-	return (NULL);
+	i = -1;
+	while (str[++i])
+		add[i] = str[i];
+	free(str);
+	add[i++] = c;
+	add[i] = '\0';
+	return (add);
 }

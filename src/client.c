@@ -6,7 +6,7 @@
 /*   By: mberquer <mberquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 03:11:07 by mberquer          #+#    #+#             */
-/*   Updated: 2022/07/09 14:38:12 by mberquer         ###   ########.fr       */
+/*   Updated: 2022/07/11 18:35:18 by mberquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,26 @@ int	send_null(int pid, char *str)
 
 int	sending_bits(int pid, char *str)
 {
-	static int	s_pid = 0;
 	static char	*message = 0;
-	static int	shift = -1;
+	static int	s_pid = 0;
+	static int	bits = -1;
 
 	if (str)
 		message = ft_strdup(str);
+	if (!message)
+		error(0);
 	if (pid)
 		s_pid = pid;
-	if (message[++shift / 8])
+	if (message[++bits / 8])
 	{
-			if (message[shift / 8] & (0x80 >> shift % 8))
-				kill(pid, SIGUSR1);
-			else
-				kill(pid, SIGUSR2);
+		if (message[bits / 8] & (0x80 >> (bits % 8)))
+		{
+			if (kill(s_pid, SIGUSR2) == -1)
+				error(message);
+		}
+		else if (kill(s_pid, SIGUSR1) == -1)
+			error(message);
+		return (0);
 	}
 	if (!send_null(s_pid, message))
 		return (0);
@@ -63,14 +69,14 @@ void	handler_sigusr(int signum)
 	end = 0;
 	if (signum == SIGUSR1)
 		end = sending_bits(0, 0);
-	else if (signum == SIGUSR2)
+	if (signum == SIGUSR2)
 	{
-		ft_printf("client: server ended unexpectdly.\n");
+		ft_putstr_fd("client: server ended unexpectedly.\n", 2);
 		exit(EXIT_FAILURE);
 	}
 	if (end)
 	{
-		ft_printf("client: operation successful.\n");
+		ft_putstr_fd("client: operation successful.\n", 1);
 		exit(EXIT_SUCCESS);
 	}
 }
@@ -79,11 +85,12 @@ int	main(int argc, char *argv[])
 {
 	if (argc != 3 || !pid_check(argv[1]))
 	{
-	ft_printf("client: invalid arguments\n");
-   	exit(EXIT_FAILURE);
+		ft_putstr_fd("client: invalid arguments\n", 2);
+		exit(EXIT_FAILURE);
 	}
 	signal(SIGUSR1, handler_sigusr);
 	signal(SIGUSR2, handler_sigusr);
 	sending_bits(ft_atoi(argv[1]), argv[2]);
-	sleep(20000);
+	while (1)
+		pause();
 }

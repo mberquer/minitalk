@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_pid_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mberquer <mberquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/07 14:11:42 by mberquer          #+#    #+#             */
-/*   Updated: 2022/07/11 17:12:48 by mberquer         ###   ########.fr       */
+/*   Created: 2022/07/11 12:14:09 by mberquer          #+#    #+#             */
+/*   Updated: 2022/07/11 18:35:07 by mberquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+int	pid_check(char *pid)
 {
-	size_t	i;
+	int	i;
 
-	if (s)
+	i = 0;
+	if (pid[0] == '-')
+		return (0);
+	while (pid[i])
 	{
-		i = 0;
-		while (s[i])
-		{
-			write(fd, &s[i], 1);
-			i++;
-		}
+		if (!ft_isdigit(pid[i]))
+			return (0);
+		i++;
 	}
+	if (ft_atoi(pid) == 0)
+		return (0);
+	return (1);
 }

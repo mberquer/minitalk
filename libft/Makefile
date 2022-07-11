@@ -23,7 +23,7 @@ SRCS	= 	ft_isalpha.c\
 		ft_strdup.c\
 		ft_substr.c\
 		ft_strjoin.c\
-		ft_strjoin_minitalk.c\		
+		ft_strjoin_minitalk.c\
 		ft_strtrim.c\
 		ft_split.c\
 		ft_itoa.c\
@@ -32,7 +32,8 @@ SRCS	= 	ft_isalpha.c\
 		ft_putchar_fd.c\
 		ft_putstr_fd.c\
 		ft_putendl_fd.c\
-		ft_putnbr_fd.c
+		ft_putnbr_fd.c\
+		ft_pid_check.c
 
 SRCSBON	=	ft_lstnew.c\
 		ft_lstadd_front.c\

@@ -6,7 +6,7 @@
 /*   By: mberquer <mberquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:12:18 by mberquer          #+#    #+#             */
-/*   Updated: 2022/07/11 01:22:22 by mberquer         ###   ########.fr       */
+/*   Updated: 2022/07/11 16:57:51 by mberquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-char	*ft_strjoin_mt(char const *s1, char const c);
+char	*ft_straddc(char *str, char c);
+int		pid_check(char *pid);
 
 #endif

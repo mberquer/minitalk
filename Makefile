@@ -6,11 +6,13 @@
 #    By: mberquer <mberquer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/16 11:49:37 by mberquer          #+#    #+#              #
-#    Updated: 2022/07/11 01:12:40 by mberquer         ###   ########.fr        #
+#    Updated: 2022/07/11 18:22:43 by mberquer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minitalk
+NAMES = server
+NAMEC = client
 
 PRINTF = ft_printf/ft_print_char.c \
 		ft_printf/ft_print_hexa.c \
@@ -24,7 +26,7 @@ LIBFT = libft/libft.a
 
 SRCSC = src/client.c
 
-SRCSS = src/server.c \
+SRCSS = src/server.c
 
 
 OBJC = $(SRCSC:%.c=%.o)
@@ -39,9 +41,14 @@ FLAG = -g3 -Wall -Wextra -Werror
 
 SANI = -fsanitize=address
 
-$(NAME): $(OBJS) $(OBJC) $(OBJP)
-	$(MAKE) -C libft
+$(NAME): $(NAMES) $(NAMEC)
+
+$(NAMES): $(OBJS) $(OBJP)
+	make -C libft
 	$(CC) $(OBJS) $(OBJP) $(LIBFT) -o server #$(SANI)
+
+$(NAMEC): $(OBJC) $(OBJP)
+	make -C libft
 	$(CC) $(OBJC) $(OBJP) $(LIBFT) -o client #$(SANI)
 
 %.o: %.c
@@ -53,9 +60,9 @@ clean:
 
 fclean: clean
 	$(MAKE) fclean -C libft
-	rm -rf client server
+	rm -rf $(NAMEC) $(NAMES)
 
-all: $(NAME) 
+all: $(NAME)
 	
 re: fclean
 	make all
