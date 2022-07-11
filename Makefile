@@ -6,7 +6,7 @@
 #    By: mberquer <mberquer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/16 11:49:37 by mberquer          #+#    #+#              #
-#    Updated: 2022/07/09 14:46:00 by mberquer         ###   ########.fr        #
+#    Updated: 2022/07/11 01:12:40 by mberquer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ FLAG = -g3 -Wall -Wextra -Werror
 
 SANI = -fsanitize=address
 
-$(NAME): $(OBJC) $(OBJS) $(OBJP)
+$(NAME): $(OBJS) $(OBJC) $(OBJP)
 	$(MAKE) -C libft
 	$(CC) $(OBJS) $(OBJP) $(LIBFT) -o server #$(SANI)
 	$(CC) $(OBJC) $(OBJP) $(LIBFT) -o client #$(SANI)
